@@ -2,21 +2,30 @@
   (:use ring.adapter.jetty)
   (:require [compojure.core :refer :all]
             [ring.middleware.json :refer [wrap-json-response wrap-json-body]]
-            [ring.middleware.cors :refer [wrap-cors]]))
+            [ring.middleware.cors :refer [wrap-cors]]
+            [cric-scorer-apis.core-logic.match :as core-logic]))
 
 (defonce match-data
          (atom
            {:first-team  nil
-            :second-team nil}))
+            :second-team nil
+            :overs nil
+            :action :ACTION_CREATE_GAME}))
 
-(defn start-match [{{first-team "first-team" second-team "second-team"} :body}]
-  (swap! match-data #(-> %
-                         (assoc :first-team first-team)
-                         (assoc :second-team second-team))))
+;Handlers Start
+
+(defn start-match-handler
+  [{{first-team "first-team"
+     second-team "second-team"
+     overs "overs"} :body}]
+  (swap! match-data core-logic/start-match first-team second-team overs))
+
+;Handlers End
+
 
 (defroutes app-routes
            (POST "/start-match" request {:status 200
-                                         :body   (start-match request)}))
+                                         :body   (start-match-handler request)}))
 
 (def app
   (-> app-routes
