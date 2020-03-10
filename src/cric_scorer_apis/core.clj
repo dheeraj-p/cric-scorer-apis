@@ -16,8 +16,7 @@
 
 (defroutes app-routes
            (POST "/start-match" request {:status 200
-                                         :body   (start-match request)})
-           (GET "/hello" [] {:status 200 :body {:message "OK"}}))
+                                         :body   (start-match request)}))
 
 (def app
   (-> app-routes
