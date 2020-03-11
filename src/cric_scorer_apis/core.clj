@@ -7,10 +7,7 @@
 
 (defonce match-data
          (atom
-           {:first-team  nil
-            :second-team nil
-            :overs nil
-            :action :ACTION_CREATE_GAME}))
+           {:action :ACTION_CREATE_GAME}))
 
 ;Handlers Start
 
@@ -25,7 +22,9 @@
 
 (defroutes app-routes
            (POST "/start-match" request {:status 200
-                                         :body   (start-match-handler request)}))
+                                         :body   (start-match-handler request)})
+           (GET "/match-action" _ {:status 200
+                                   :body   (select-keys @match-data [:action])}))
 
 (def app
   (-> app-routes

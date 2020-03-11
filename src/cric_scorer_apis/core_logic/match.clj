@@ -4,4 +4,5 @@
   (-> match-data
       (assoc :first-team first-team)
       (assoc :second-team second-team)
-      (assoc :overs overs)))
+      (assoc :overs overs)
+      (assoc :action :ACTION_SELECT_INITIAL_PLAYERS)))
