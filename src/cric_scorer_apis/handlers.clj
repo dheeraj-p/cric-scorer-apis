@@ -16,9 +16,16 @@
   (-> (swap! match-data core-logic/register-initial-match-data first-team second-team overs)
       create-response))
 
-(defn match-action-handler [request]
-  (-> request
-      :match-data
-      deref
+(defn match-action-handler [{match-data :match-data}]
+  (-> @match-data
       (select-keys [:action])
+      create-response))
+
+(defn register-initial-players-handler
+  [{match-data :match-data
+    {striker "striker"
+     non-striker "non-striker"
+     bowler "bowler"} :body}]
+  (-> match-data
+      (swap! core-logic/register-initial-players striker non-striker bowler)
       create-response))
