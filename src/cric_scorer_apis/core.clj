@@ -42,4 +42,4 @@
                  :access-control-allow-methods [:get :put :post :delete])))
 
 (defn -main []
-  (run-jetty app {:port 8000}))
+  (run-jetty app {:port 3555}))

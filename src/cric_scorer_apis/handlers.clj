@@ -34,8 +34,7 @@
   (create-response (core-logic/match-stats @match-data)))
 
 (defn play-ball-handler
-  [{[ball-types runs] :body
-    match-data        :match-data}]
-  (-> (swap! match-data core-logic/add-runs-to-striker (Integer/parseInt runs))
-      core-logic/match-stats
-      create-response))
+  [{[ball-type runs-scored] :body
+    match-data              :match-data}]
+    (swap! match-data core-logic/add-ball ball-type (Integer/parseInt runs-scored))
+    (create-response (core-logic/match-stats @match-data)))

@@ -182,3 +182,22 @@
    :current-batsmen-stats (current-batsmen-stats match-data)
    :current-bowler-stats  (current-bowler-stats match-data)
    :current-over          (:current-over match-data)})
+
+(defonce short-form-ball-type
+         {"Wicket"   :W
+          "No Ball"  :NB
+          "Byes"     :B
+          "Leg Byes" :LB
+          "Wide"     :WD})
+
+
+(defn add-ball-to-current-over [match-data ball-type runs-scored]
+  (assoc
+    match-data
+    :current-over
+    (conj (:current-over match-data) (str (name (get short-form-ball-type (first ball-type) "")) runs-scored))))
+
+(defn add-ball [match-data ball-type runs-scored]
+  (-> match-data
+      (add-ball-to-current-over ball-type runs-scored)
+      (add-runs-to-striker runs-scored)))
