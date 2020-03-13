@@ -22,10 +22,13 @@
       create-response))
 
 (defn register-initial-players-handler
-  [{match-data :match-data
-    {striker "striker"
+  [{{striker     "striker"
      non-striker "non-striker"
-     bowler "bowler"} :body}]
-  (-> match-data
-      (swap! core-logic/register-initial-players striker non-striker bowler)
+     bowler      "bowler"} :body
+    match-data             :match-data}]
+  (-> (swap! match-data core-logic/register-initial-players striker non-striker bowler)
       create-response))
+
+(defn get-match-data
+  [{match-data :match-data}]
+  (create-response (core-logic/match-stats @match-data)))

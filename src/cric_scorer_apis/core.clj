@@ -28,13 +28,14 @@
 (defroutes app-routes
            (POST "/register-match" request (match-registration-handler request))
            (POST "/register-initial-players" request (register-initial-players-handler request))
-           (GET "/match-action" request (match-action-handler request)))
+           (GET "/match-action" request (match-action-handler request))
+           (GET "/match-data" request (get-match-data request)))
 
 (def app
   (-> app-routes
       wrap-json-response
       wrap-match-data
-      wrap-logger
+      ;wrap-logger
       wrap-json-body
       (wrap-cors :access-control-allow-origin [#"http://localhost:3449"]
                  :access-control-allow-methods [:get :put :post :delete])))
