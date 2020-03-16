@@ -107,6 +107,31 @@
         (* 100)
         int)))
 
+(defn find-player-by-name [player-name players]
+  (first (filter #(= (:name %) player-name) players)))
+
+(defn get-player-position-by-name [player-name players]
+  (first (keep-indexed (fn [indx elem] (when (= (:name elem) player-name) indx)) players)))
+
+(defn rotate-strike [match-data]
+  (let [striker (:striker-batsman match-data)
+        non-striker (:non-striker-batsman match-data)]
+    (assoc match-data :striker-batsman non-striker :non-striker-batsman striker)))
+
+(defn add-runs-to-striker [match-data runs]
+  (let [striker (:striker-batsman match-data)
+        batting-team (:batting-team match-data)
+        batting-team-players (get-in match-data [batting-team :players])]
+    (-> match-data
+        (update-in [batting-team
+                    :players
+                    (get-player-position-by-name striker batting-team-players)
+                    :runs] + runs)
+        (as-> updated-data
+              (if (odd? runs)
+                (rotate-strike updated-data)
+                (identity updated-data))))))
+
 (defn display-overs [{overs :overs balls :balls}]
   (str overs "." balls))
 
@@ -134,9 +159,6 @@
                                 (total-balls-played match-data (:batting-team match-data)))
                  :RRR 0}
    :total-overs (:total-overs match-data)})
-
-(defn find-player-by-name [player-name players]
-  (first (filter #(= (:name %) player-name) players)))
 
 (defn batsman-stats [batsman]
   {:name  (:name batsman)

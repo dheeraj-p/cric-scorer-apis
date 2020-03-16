@@ -28,6 +28,7 @@
 (defroutes app-routes
            (POST "/register-match" request (match-registration-handler request))
            (POST "/register-initial-players" request (register-initial-players-handler request))
+           (POST "/play-ball" request (play-ball-handler request))
            (GET "/match-action" request (match-action-handler request))
            (GET "/match-data" request (get-match-data request)))
 
